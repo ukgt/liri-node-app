@@ -13,35 +13,50 @@ console.log(command);
 console.log(details);
 
 
-let getMovie = function(movieName){
+let getMovie = function (movieName) {
      debugger;
-     axios.get("http://www.omdbapi.com/?t="+movieName+"&y=&plot=short&apikey=trilogy").then(
-          function(response){
+     axios.get("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy").then(
+          function (response) {
                // console.log(JSON.stringify(response.data, null, 4)); 
                console.log(response.data);
+               console.log("Title: " + response.data.Title);
+               console.log("Year: " + response.data.Year);
+               console.log("Rated: " + response.data.Rated);
+               console.log("IMDB Rating: " + response.data.imdbRating);
+               console.log("Country: " + response.data.Country);
+               console.log("Language: " + response.data.Language);
+               console.log("Plot: " + response.data.Plot);
+               console.log("Actors: " + response.data.Actors);
+               console.log("Rotton Tomatoes Rating: " + response.data.Ratings[1].Value);
           }
-          )
+     )
 }
-let getSong = function(songName){
-//      // debugger;
-//      // let spotify = new Spotify(keys.spotify);
-//      // if(!details){
-//      //      details = "Silent Night";
-//      // }
-//      // spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
-//      //      if (err) {
-//      //        return console.log('Error occurred: ' + err);
-//      //      }
-//        console.log(songName);
-   
-//   })
+// Function for Spotify Search:
+let getSong = function (songName) {
+      debugger;
+      if(songName === undefined){
+           songName = "Scandolon";
+          }
+          spotify.search({ type: 'track', query: songName, limit:10 }, function(err, data) {
+           if (err) {
+            return console.log('Error occurred: ' + err);
+          }
+          let songs = data.tracks.items;
+          for (let i = 0;i < songs.length; i++){
+               console.log(i);
+               // console.log(songName);
+          }
+
+        })
 }
-let getConcert = function(bandName){
+// Bands in Town Artist Events API 
+let getConcert = function (bandName) {
+ get("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp")
      console.log(bandName)
 }
-let getRandom = function(){
-     fs.readFile('random.txt', 'utf8', function(error, data){
-          if(error){
+let getRandom = function () {
+     fs.readFile('random.txt', 'utf8', function (error, data) {
+          if (error) {
                return console.log(error);
           }
           let dataRandom = data.split(",");
@@ -52,22 +67,20 @@ let getRandom = function(){
      console.log("random");
 }
 
-switch(command){
+switch (command) {
      case "movie-this":
-     getMovie(details);
-     break;
+          getMovie(details);
+          break;
      case "do-what-it-says":
-     getRandom();
-     break;
+          getRandom();
+          break;
      case "concert-this":
-     getConcert(details);
-     break;
+          getConcert(details);
+          break;
      case "spotify-this-song":
-     getSong(details);
-     break;
+          getSong(details);
+          break;
      default:
-     break;
+          break;
 }
 
-// Bands in Town Artist Events API 
-// ("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp") 
