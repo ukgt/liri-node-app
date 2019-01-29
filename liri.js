@@ -18,7 +18,7 @@ let getMovie = function (movieName) {
      axios.get("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy").then(
           function (response) {
                // console.log(JSON.stringify(response.data, null, 4)); 
-               console.log(response.data);
+               // console.log(response.data);
                console.log("Title: " + response.data.Title);
                console.log("Year: " + response.data.Year);
                console.log("Rated: " + response.data.Rated);
@@ -35,7 +35,7 @@ let getMovie = function (movieName) {
 let getSong = function (songName) {
       debugger;
       if(songName === undefined){
-           songName = "Scandolon";
+           songName = "Scandalon";
           }
           spotify.search({ type: 'track', query: songName, limit:10 }, function(err, data) {
            if (err) {
@@ -43,15 +43,15 @@ let getSong = function (songName) {
           }
           let songs = data.tracks.items;
           for (let i = 0;i < songs.length; i++){
-               console.log(i);
-               // console.log(songName);
+               console.log(data.tracks.items[0])
+                console.log(songName);
           }
 
         })
 }
 // Bands in Town Artist Events API 
 let getConcert = function (bandName) {
- get("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp")
+ ("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp")
      console.log(bandName)
 }
 let getRandom = function () {

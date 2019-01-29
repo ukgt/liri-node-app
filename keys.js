@@ -1,4 +1,4 @@
-let spotify = new Spotify(keys.spotify);
+// let spotify = new Spotify(keys.spotify);
 
 // console.log('this is loaded');
 
