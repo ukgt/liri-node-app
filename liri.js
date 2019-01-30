@@ -5,6 +5,7 @@ let axios = require('axios');
 let moment = require('moment');
 let dotenv = require('dotenv');
 let fs = require('fs');
+let bandsintown = require('bandsintown');
 let Spotify = require('node-spotify-api');
 let spotify = new Spotify(keys.spotify);
 let command = process.argv[2];
@@ -33,25 +34,32 @@ let getMovie = function (movieName) {
 }
 // Function for Spotify Search:
 let getSong = function (songName) {
-      debugger;
-      if(songName === undefined){
-           songName = "Scandalon";
-          }
-          spotify.search({ type: 'track', query: songName, limit:10 }, function(err, data) {
-           if (err) {
-            return console.log('Error occurred: ' + err);
+     debugger;
+     if (songName === undefined) {
+          songName = "Scandalon";
+     }
+     spotify.search({
+          type: 'track',
+          query: songName,
+          limit: 10
+     }, function (err, data) {
+          if (err) {
+               return console.log('Error occurred: ' + err);
           }
           let songs = data.tracks.items;
-          for (let i = 0;i < songs.length; i++){
-               console.log(data.tracks.items[0])
-                console.log(songName);
+          for (let i = 0; i < songs.length; i++) {
+               // console.log(data.tracks.items[0])
+               console.log("Artist(s): " + data.tracks.items[0].name);
+               console.log("Song Name: " + data.tracks.items[0].name);
+               console.log("Preview Link: " + data.tracks.items[0].preview_url);
+               console.log("Album: " + data.tracks.items[0].album.name);
           }
 
-        })
+     })
 }
 // Bands in Town Artist Events API 
 let getConcert = function (bandName) {
- ("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp")
+     bandsintown.getArtistsEventList("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp")
      console.log(bandName)
 }
 let getRandom = function () {
@@ -60,9 +68,9 @@ let getRandom = function () {
                return console.log(error);
           }
           let dataRandom = data.split(",");
-          // // if (dataRandom[0]==="spotify-this-song"){
+          if (dataRandom[0] === "spotify-this-song") {
 
-          // }
+          }
      })
      console.log("random");
 }
@@ -83,4 +91,3 @@ switch (command) {
      default:
           break;
 }
-
