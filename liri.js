@@ -5,7 +5,7 @@ let axios = require('axios');
 let moment = require('moment');
 let dotenv = require('dotenv');
 let fs = require('fs');
-let bandsintown = require('bandsintown')(codingbootcamp);
+let bandsintown = require('bandsintown')('codingbootcamp');
 let Spotify = require('node-spotify-api');
 let spotify = new Spotify(keys.spotify);
 let command = process.argv[2];
@@ -58,22 +58,32 @@ let getSong = function (songName) {
      })
 }
 // Bands in Town Artist Events API 
-let getConcert = function (bandName) {
-     bandsintown.getArtistsEventList("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp")
-     .then (function(events){
-          if(bandName === undefined){
-               bandName === 'United Pursuit';
-          }bandsintown.getArtistsEventList({
-               Type: "Artit's name",
-               Documentation: (yyyy-mm-dd,yyyy-mm-dd)
-          })
-     }
-     )
-     }
-         
-          // console.log(bandName);
-
-     
+// let getConcert = function (bandName) {
+//      debugger;
+//      let queryURL = ("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp")
+//      axios.get(queryURL).then(
+//           function(response){
+//               var jsonData = response.data;
+//               console.log('DataL: ', jsonData);
+//           }
+//      );
+//      };
+    
+     let getConcert = function(bandName) {
+          debugger;
+          if (!details) {
+              details = "Mercy Me";
+          }
+          axios.get("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp")
+          .then(function(response) {
+              for (var i = 0; i < response.data.length; i++) {
+      
+                  console.log("Venue Name: "+ response.data[i].venue.name);
+                  console.log("Venue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country);
+                  console.log("Date of the Event: " + moment(response.data[i].datetime).format("MM/DD/YYYY"));
+              }
+          });
+      }   
 
 let getRandom = function () {
      fs.readFile('random.txt', 'utf8', function (error, data) {
@@ -82,24 +92,28 @@ let getRandom = function () {
           }
           let dataRandom = data.split(",");
           if (dataRandom[0] === "spotify-this-song") {
-
+               let songName = dataRandom[1].slice(1,-1);
+               console.log(songName);
+               
+          }else if(dataRandom[0] === 'movie-this'){
+               let movieName = dataRandom[2].slice(1,-1);
+               console.log(movieName);
           }
      })
-     console.log("random");
 }
 
 switch (command) {
      case "movie-this":
           getMovie(details);
           break;
-     case "do-what-it-says":
-          getRandom();
+          case "spotify-this-song":
+          getSong(details);
           break;
      case "concert-this":
           getConcert(details);
           break;
-     case "spotify-this-song":
-          getSong(details);
+     case "do-what-it-says":
+          getRandom();
           break;
      default:
           break;
