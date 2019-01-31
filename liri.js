@@ -5,7 +5,7 @@ let axios = require('axios');
 let moment = require('moment');
 let dotenv = require('dotenv');
 let fs = require('fs');
-let bandsintown = require('bandsintown');
+let bandsintown = require('bandsintown')(codingbootcamp);
 let Spotify = require('node-spotify-api');
 let spotify = new Spotify(keys.spotify);
 let command = process.argv[2];
@@ -60,8 +60,21 @@ let getSong = function (songName) {
 // Bands in Town Artist Events API 
 let getConcert = function (bandName) {
      bandsintown.getArtistsEventList("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp")
-     console.log(bandName)
-}
+     .then (function(events){
+          if(bandName === undefined){
+               bandName === 'United Pursuit';
+          }bandsintown.getArtistsEventList({
+               Type: "Artit's name",
+               Documentation: (yyyy-mm-dd,yyyy-mm-dd)
+          })
+     }
+     )
+     }
+         
+          // console.log(bandName);
+
+     
+
 let getRandom = function () {
      fs.readFile('random.txt', 'utf8', function (error, data) {
           if (error) {
